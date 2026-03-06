@@ -27,6 +27,7 @@ Options for 'add':
   --domain,  -d  Domain/org label (for reference)
   --desc         Description
   --login,   -l  Trigger gcloud auth login after adding
+  --skip,    -s  Skip prompts for region, zone, domain, and description
 
 Examples:
   gcps add --name work --account alice@company.com --project company-prod --login

@@ -17,6 +17,7 @@ func cmdAdd(args []string) error {
 		domain  string
 		desc    string
 		login   bool
+		skip    bool
 
 		// track which fields were explicitly set via flags (skip prompting for those)
 		flagProject bool
@@ -45,13 +46,17 @@ func cmdAdd(args []string) error {
 			desc = nextArg(args, &i)
 		case "--login", "-l":
 			login = true
+		case "--skip", "-s":
+			skip = true
 		}
 	}
 
 	name = promptIfEmpty("Profile name", name)
 	account = promptIfEmpty("Account (email)", account)
-	domain = promptIfEmpty("Domain (optional)", domain)
-	desc = promptIfEmpty("Description (optional)", desc)
+	if !skip {
+		domain = promptIfEmpty("Domain (optional)", domain)
+		desc = promptIfEmpty("Description (optional)", desc)
+	}
 
 	// For project/region/zone: if supplied via flag, use as-is.
 	// Otherwise, pre-populate from current gcloud state and let the user confirm or override.
@@ -59,11 +64,11 @@ func cmdAdd(args []string) error {
 		cur, _ := GetCurrentProject()
 		project = promptWithDefault("Project ID", gcloudVal(cur))
 	}
-	if !flagRegion {
+	if !flagRegion && !skip {
 		cur, _ := runGcloud("config", "get-value", "compute/region")
 		region = promptWithDefault("Default region (optional, e.g. us-central1)", gcloudVal(cur))
 	}
-	if !flagZone {
+	if !flagZone && !skip {
 		cur, _ := runGcloud("config", "get-value", "compute/zone")
 		zone = promptWithDefault("Default zone (optional, e.g. us-central1-a)", gcloudVal(cur))
 	}
