@@ -1,4 +1,4 @@
-# gcps — GCP Account Switcher
+# gcpas — GCP Account Switcher
 
 Manage multiple GCP accounts and projects without logging in every time.
 Credentials are cached by `gcloud` — switching is instant after the first login.
