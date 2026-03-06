@@ -1,4 +1,4 @@
-# gcpas — GCP Account Switcher
+# gcpas (GCP Account Switcher)
 
 Manage multiple GCP accounts and projects without logging in every time.
 Credentials are cached by `gcloud` — switching is instant after the first login.
@@ -18,7 +18,7 @@ Any fields not provided as flags are prompted interactively. To skip the prompts
 gcpas add --name work --account you@work.com --project work-proj-id --skip
 ```
 
-### All `add` flags
+### all `add` flags
 
 | Flag | Short | Description |
 |------|-------|-------------|
