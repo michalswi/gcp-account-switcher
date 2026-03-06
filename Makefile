@@ -19,5 +19,5 @@ build-mac: ## Build for mac
 build-linux: ## Build for linux
 	GOOS=linux GOARCH=amd64 go build -a \
 	-ldflags "-s -w -X 'main.Version=$(APP_VERSION)'" \
-	-o $(APP_NAME)
-	sha256sum $(APP_NAME) > $(APP_NAME)_linux_amd64.sha256
+	-o $(APP_NAME)_linux_amd64
+	sha256sum $(APP_NAME)_linux_amd64 > $(APP_NAME)_linux_amd64.sha256

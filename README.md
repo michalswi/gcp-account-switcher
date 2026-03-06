@@ -2,9 +2,9 @@
 
 # gcpas (GCP Account Switcher)
 
-[![stars](https://img.shields.io/github/stars/michalswi/gcpas?style=for-the-badge&color=353535)](https://github.com/michalswi/gcpas)
-[![forks](https://img.shields.io/github/forks/michalswi/gcpas?style=for-the-badge&color=353535)](https://github.com/michalswi/gcpas/fork)
-[![releases](https://img.shields.io/github/v/release/michalswi/gcpas?style=for-the-badge&color=353535)](https://github.com/michalswi/gcpas/releases)
+[![stars](https://img.shields.io/github/stars/michalswi/gcp-account-switcher?style=for-the-badge&color=353535)](https://github.com/michalswi/gcp-account-switcher)
+[![forks](https://img.shields.io/github/forks/michalswi/gcp-account-switcher?style=for-the-badge&color=353535)](https://github.com/michalswi/gcp-account-switcher/fork)
+[![releases](https://img.shields.io/github/v/release/michalswi/gcp-account-switcher?style=for-the-badge&color=353535)](https://github.com/michalswi/gcp-account-switcher/releases)
 
 manage multiple GCP accounts and projects without logging in every time.
 Credentials are cached by `gcloud` — switching is instant after the first login.
