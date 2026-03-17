@@ -79,7 +79,7 @@ func cmdAdd(args []string) error {
 	}
 
 	if existing, _ := cfg.FindProfile(name); existing != nil {
-		return fmt.Errorf("profile '%s' already exists, delete it first with: gcps delete %s", name, name)
+		return fmt.Errorf("profile '%s' already exists, delete it first with: gcpas delete %s", name, name)
 	}
 
 	cfg.Profiles = append(cfg.Profiles, Profile{
@@ -141,7 +141,7 @@ func cmdUse(args []string) error {
 	}
 
 	if len(cfg.Profiles) == 0 {
-		return fmt.Errorf("no profiles found, run 'gcps add' first")
+		return fmt.Errorf("no profiles found, run 'gcpas add' first")
 	}
 
 	if name == "" {
@@ -196,23 +196,59 @@ func cmdList() error {
 	}
 
 	if len(cfg.Profiles) == 0 {
-		fmt.Println("No profiles configured. Run 'gcps add' to add one.")
+		fmt.Println("No profiles configured. Run 'gcpas add' to add one.")
 		return nil
 	}
 
-	fmt.Printf("\n%-15s %-30s %-25s %-15s %s\n",
-		"NAME", "ACCOUNT", "PROJECT", "REGION", "STATUS")
-	fmt.Println(strings.Repeat("─", 95))
+	// Compute dynamic column widths from actual content.
+	wName, wAccount, wProject, wRegion := len("NAME"), len("ACCOUNT"), len("PROJECT"), len("REGION")
+	hasRegion := false
+	for _, p := range cfg.Profiles {
+		if len(p.Name) > wName {
+			wName = len(p.Name)
+		}
+		if len(p.Account) > wAccount {
+			wAccount = len(p.Account)
+		}
+		if len(p.Project) > wProject {
+			wProject = len(p.Project)
+		}
+		if len(p.Region) > wRegion {
+			wRegion = len(p.Region)
+		}
+		if p.Region != "" {
+			hasRegion = true
+		}
+	}
+	// Add a small padding gap between columns.
+	wName += 2
+	wAccount += 2
+	wProject += 2
+	wRegion += 2
+
+	// Print header.
+	fmt.Println()
+	if hasRegion {
+		fmt.Printf("%-*s%-*s%-*s%-*s%s\n", wName, "NAME", wAccount, "ACCOUNT", wProject, "PROJECT", wRegion, "REGION", "STATUS")
+		fmt.Println(strings.Repeat("─", wName+wAccount+wProject+wRegion+8))
+	} else {
+		fmt.Printf("%-*s%-*s%-*s%s\n", wName, "NAME", wAccount, "ACCOUNT", wProject, "PROJECT", "STATUS")
+		fmt.Println(strings.Repeat("─", wName+wAccount+wProject+8))
+	}
 
 	for _, p := range cfg.Profiles {
+		isActive := p.Name == cfg.ActiveProfile
 		status := ""
-		if p.Name == cfg.ActiveProfile {
-			status = "● active"
+		if isActive {
+			status = "\033[32m● active\033[0m"
 		}
-		fmt.Printf("%-15s %-30s %-25s %-15s %s\n",
-			p.Name, p.Account, p.Project, p.Region, status)
+		if hasRegion {
+			fmt.Printf("%-*s%-*s%-*s%-*s%s\n", wName, p.Name, wAccount, p.Account, wProject, p.Project, wRegion, p.Region, status)
+		} else {
+			fmt.Printf("%-*s%-*s%-*s%s\n", wName, p.Name, wAccount, p.Account, wProject, p.Project, status)
+		}
 		if p.Description != "" {
-			fmt.Printf("  └─ %s\n", p.Description)
+			fmt.Printf("  └─ \033[2m%s\033[0m\n", p.Description)
 		}
 	}
 	fmt.Println()
@@ -234,7 +270,7 @@ func cmdCurrent() error {
 
 	if cfg.ActiveProfile != "" {
 		if p, _ := cfg.FindProfile(cfg.ActiveProfile); p != nil {
-			fmt.Printf("📌 Active gcps profile : %s\n", p.Name)
+			fmt.Printf("📌 Active gcpas profile : %s\n", p.Name)
 			if p.Domain != "" {
 				fmt.Printf("   Domain              : %s\n", p.Domain)
 			}
@@ -263,7 +299,7 @@ func cmdCurrent() error {
 
 func cmdDelete(args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: gcps delete <profile-name>")
+		return fmt.Errorf("usage: gcpas delete <profile-name>")
 	}
 	name := args[0]
 
@@ -296,7 +332,7 @@ func cmdDelete(args []string) error {
 
 func cmdInit(args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: gcps init <profile-name>")
+		return fmt.Errorf("usage: gcpas init <profile-name>")
 	}
 	name := args[0]
 

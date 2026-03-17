@@ -5,10 +5,10 @@ import (
 	"os"
 )
 
-const usage = `gcps - GCP Account Switcher
+const usage = `gcpas - GCP Account Switcher
 
 Usage:
-  gcps <command> [options]
+  gcpas <command> [options]
 
 Commands:
   add                          Add a new profile (interactive or via flags)
@@ -30,15 +30,15 @@ Options for 'add':
   --skip,    -s  Skip prompts for region, zone, domain, and description
 
 Examples:
-  gcps add --name work --account alice@company.com --project company-prod --login
-  gcps add --name personal --account alice@gmail.com --project my-proj
-  gcps use work
-  gcps use                     # interactive picker
-  gcps use work --login        # force re-auth
-  gcps list
-  gcps current
-  gcps init staging            # snapshot current gcloud state
-  gcps delete personal
+  gcpas add --name work --account alice@company.com --project company-prod --login
+  gcpas add --name personal --account alice@gmail.com --project my-proj
+  gcpas use work
+  gcpas use                     # interactive picker
+  gcpas use work --login        # force re-auth
+  gcpas list
+  gcpas current
+  gcpas init staging            # snapshot current gcloud state
+  gcpas delete personal
 `
 
 func main() {
